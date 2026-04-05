@@ -9,15 +9,36 @@ import {
   Fredoka_700Bold,
 } from '@expo-google-fonts/fredoka';
 import * as SplashScreen from 'expo-splash-screen';
-import { PooProvider } from './src/context/PooContext';
+import { PooProvider, usePoo } from './src/context/PooContext';
 import HomeScreen from './src/screens/HomeScreen';
 import HistoryScreen from './src/screens/HistoryScreen';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function App() {
+function AppContent({ fontsLoaded }: { fontsLoaded: boolean }) {
+  const { isLoaded: dataLoaded } = usePoo();
   const [screen, setScreen] = useState<'home' | 'history'>('home');
 
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded && dataLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, dataLoaded]);
+
+  if (!fontsLoaded || !dataLoaded) return null;
+
+  return (
+    <View style={styles.root} onLayout={onLayoutRootView}>
+      {screen === 'home' ? (
+        <HomeScreen onNavigateHistory={() => setScreen('history')} />
+      ) : (
+        <HistoryScreen onBack={() => setScreen('home')} />
+      )}
+    </View>
+  );
+}
+
+export default function App() {
   const [fontsLoaded] = useFonts({
     Fredoka_400Regular,
     Fredoka_500Medium,
@@ -25,23 +46,9 @@ export default function App() {
     Fredoka_700Bold,
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) return null;
-
   return (
     <PooProvider>
-      <View style={styles.root} onLayout={onLayoutRootView}>
-        {screen === 'home' ? (
-          <HomeScreen onNavigateHistory={() => setScreen('history')} />
-        ) : (
-          <HistoryScreen onBack={() => setScreen('home')} />
-        )}
-      </View>
+      <AppContent fontsLoaded={!!fontsLoaded} />
     </PooProvider>
   );
 }

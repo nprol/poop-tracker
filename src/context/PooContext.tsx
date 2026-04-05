@@ -17,6 +17,7 @@ interface PooContextType {
   last7Days: PooRecord[];
   todayTitle: string;
   records: Record<string, PooRecord>;
+  isLoaded: boolean;
   addPoo: () => Promise<void>;
   undoLastPoo: () => Promise<void>;
   getRandomMessage: () => string;
@@ -187,6 +188,7 @@ export const PooProvider = ({ children }: { children: ReactNode }) => {
         last7Days,
         todayTitle,
         records,
+        isLoaded,
         addPoo,
         undoLastPoo,
         getRandomMessage,
