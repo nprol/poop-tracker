@@ -30,6 +30,7 @@ interface Particle {
   endX: number;
   rotation: number;
   type: 'confetti' | 'poo';
+  round: boolean;
 }
 
 interface ConfettiProps {
@@ -55,6 +56,7 @@ export default function Confetti({ trigger }: ConfettiProps) {
         endX: (Math.random() - 0.5) * 150,
         rotation: Math.random() * 720,
         type: 'confetti',
+        round: Math.random() > 0.5,
       });
     }
     // Floating poo emojis
@@ -69,6 +71,7 @@ export default function Confetti({ trigger }: ConfettiProps) {
         endX: (Math.random() - 0.5) * 100,
         rotation: Math.random() * 360,
         type: 'poo',
+        round: false,
       });
     }
 
@@ -142,7 +145,7 @@ function ConfettiPiece({ particle }: { particle: Particle }) {
           top: -20,
           width: particle.size,
           height: particle.size * 0.6,
-          borderRadius: Math.random() > 0.5 ? particle.size / 2 : 2,
+          borderRadius: particle.round ? particle.size / 2 : 2,
           backgroundColor: particle.color,
         },
         style,

@@ -9,7 +9,18 @@
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
       "backgroundColor": "#1A1220"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon-fg.png",
+        "backgroundImage": "./assets/adaptive-icon-bg.png"
+      }
+    },
+    "ios": {
+      "icon": "./assets/icon.png"
     },
     "plugins": [
       "expo-font",

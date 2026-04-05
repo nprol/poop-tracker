@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated';
+import Animated, { SlideInDown } from 'react-native-reanimated';
 import { usePoo } from '../context/PooContext';
 import { COLORS } from '../utils/theme';
 
@@ -23,7 +23,8 @@ export default function WeeklyChart() {
         {last7Days.map((record, index) => {
           const isToday = index === last7Days.length - 1;
           const barHeight = Math.max((record.count / maxCount) * 90, 4);
-          const date = new Date(record.date);
+          const [y, mo, d] = record.date.split('-').map(Number);
+          const date = new Date(y, mo - 1, d);
           const dayIndex = (date.getDay() + 6) % 7; // Mon=0
           const label = isToday ? 'Hoy' : DAY_LABELS[dayIndex];
 
